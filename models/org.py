@@ -24,7 +24,7 @@ class Organization(Base):
     t_org_waste_gen = Table(
         'org_waste_gen', metadata,
         Column('org_id', Integer, nullable=False),
-        Column('waste_item', String(255), nullable=False),
+        Column('waste_item', Integer, nullable=False),
         Column('qty', Integer, nullable=False),
         Column('units', String(10), nullable=False)
     )
@@ -32,7 +32,7 @@ class Organization(Base):
     t_org_waste_req = Table(
         'org_waste_req', metadata,
         Column('org_id', Integer, nullable=False),
-        Column('waste_item', String(255), nullable=False),
+        Column('waste_item', Integer, nullable=False),
         Column('qty', Integer, nullable=False),
         Column('units', String(10), nullable=False)
     )

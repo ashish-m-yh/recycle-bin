@@ -16,7 +16,8 @@ class Industry(Base):
     t_industry_waste = Table(
         'industry_waste', metadata,
         Column('industry_id', Integer, nullable=False),
-        Column('waste', Text, nullable=False)
+        Column('waste', Text, nullable=False),
+        Column('waste_id', Integer, nullable=False)
     )
 
     def get_wastes(self):

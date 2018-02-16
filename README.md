@@ -50,3 +50,15 @@ Contains details of organization waste generated (quantity and unit)
 Contains details of organization waste required (quantity and unit)
 
 ## Flask Models
+
+# Setup
+
+- mysql -u &lt:user&gt; -p&lt;pass&gt; recycle < scripts/recycle.sql
+
+- sudo pip install -r requirements.txt
+
+- set configurations in -
+  - models/constants.py
+  - conf.py
+
+- python server.py 

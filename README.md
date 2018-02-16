@@ -10,11 +10,18 @@ Provide a platform for consumers and producers of industrial waste to recycle wa
 
 * Company edit profile
 
-* Company specify generated and consumed wastes
+* Company to specify generated and consumed wastes
 
 * Search for waste
 
 # Design
+
+## Application Stack
+
+* Python 2.x
+* Flask
+* Mysql
+* Foundation UI framework
 
 ## Database design
 
@@ -41,3 +48,5 @@ Contains details of organization waste generated (quantity and unit)
 ### org_waste_req
 
 Contains details of organization waste required (quantity and unit)
+
+## Flask Models

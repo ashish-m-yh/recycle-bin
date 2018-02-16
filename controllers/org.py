@@ -16,7 +16,7 @@ def create_org(info):
     info = request.json
 
     org_info = models.org.save(info)
-    return jsonify({'org_id': })
+    #return jsonify({'org_id': })
 
 
 @org.route('/org', methods=['PUT'])

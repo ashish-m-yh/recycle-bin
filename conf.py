@@ -1,0 +1,3 @@
+API_PORT = 1234
+
+ALLOW_ALL_FROM = [ '*' ]

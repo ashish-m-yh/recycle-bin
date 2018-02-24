@@ -13,9 +13,10 @@ import re
 app = Flask(__name__)
 API_PORT = conf.API_PORT
 
-import controllers.org
+from controllers import org, index
 
-app.register_blueprint(controllers.org.org)
+app.register_blueprint(org.org)
+app.register_blueprint(index.index)
 
 import traceback
 
@@ -28,7 +29,7 @@ def add_header(resp):
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    db_base.session.remove()
+    db_base.session.close()
 
 
 @app.errorhandler(500)

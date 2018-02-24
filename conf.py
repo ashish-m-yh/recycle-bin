@@ -1,3 +1,3 @@
-API_PORT = 1234
+API_PORT = 8080
 
 ALLOW_ALL_FROM = [ '*' ]

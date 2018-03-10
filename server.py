@@ -9,9 +9,14 @@ from flask import Flask, request, jsonify, make_response
 import conf
 import db_base
 import re
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 API_PORT = conf.API_PORT
+
+csrf = CSRFProtect()
+csrf.init_app(app)
+app.secret_key = conf.SECRET_KEY
 
 from controllers import org, index
 

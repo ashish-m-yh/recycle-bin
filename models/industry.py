@@ -7,6 +7,7 @@ import db_base
 Base = declarative_base()
 metadata = Base.metadata
 
+
 class Industry(Base):
     __tablename__ = 'industry'
 

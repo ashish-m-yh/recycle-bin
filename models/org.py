@@ -37,7 +37,7 @@ class Organization(Base):
         Column('units', String(10), nullable=False)
     )
 
-    def save(org_info):
-        result = db_base.session.execute(Organisation.__table__.insert(), org_info)
+    def save(self, org_info):
+        result = db_base.session.execute(Organization.__table__.insert(), org_info)
         org_id = result.inserted_primary_key[0]
         return org_id

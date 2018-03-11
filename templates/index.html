@@ -1,11 +1,67 @@
-﻿<!doctype html>
-<html>
-<head>
-    <link href="{{ url_for('static',filename='css/index.css') }}" rel="stylesheet" type="text/css">
-</head>
-<body>
-    <div class="absolute-center">
-	    <p class="pretty">Welcome to recycle bin project.!</p>
+﻿{% extends "layout.html" %}
+{% block content %}
+
+<!-- Portfolio Item Heading -->
+<h1 class="my-4">Recycle -
+    <small>efficient management of waste resources</small>
+</h1>
+
+<!-- Portfolio Item Row -->
+<div class="row">
+
+    <div class="col-md-8">
+        <img class="img-fluid" src="/static/img/industrial_waste_1.jp" alt="">
     </div>
-</body>
-</html>
+
+    <div class="col-md-4">
+        <h3 class="my-3">Vision</h3>
+        <p>We aim to link the waste output of industries and their inputs, so that waste
+            resources of one industry can be used as input to another.
+            <br>
+            This would lead to less wastage of resources
+        </p>
+
+        <div class="form-wrap border login-form rounded">
+            <h4>Log in</h4>
+            <form role="form" action="/" method="post" id="login-form" autocomplete="off">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="email" class="sr-only">Email</label>
+                    {{ form.email(class_="form-control", placeholder="somebody@example.com") }}
+                </div>
+                <div class="form-group">
+                    <label for="password" class="sr-only">Password</label>
+                    {{ form.password(class_="form-control") }}
+                </div>
+                <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
+            </form>
+            <a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">Forgot your
+                password?</a>
+
+        </div>
+
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- Related Projects Row -->
+<h3 class="my-4">Steps</h3>
+
+<div class="stepwizard">
+    <div class="stepwizard-row">
+        <div class="stepwizard-step">
+            <button type="button" class="btn btn-danger btn-circle" disabled="disabled">1</button>
+            <p>Register / Sign in</p>
+        </div>
+        <div class="stepwizard-step">
+            <button type="button" class="btn btn-primary btn-circle" disabled="disabled">2</button>
+            <p>Enter waste produced and input material needed</p>
+        </div>
+        <div class="stepwizard-step">
+            <button type="button" class="btn btn-success btn-circle" disabled="disabled">3</button>
+            <p>Match with similar industries</p>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+{% endblock %}

@@ -1,0 +1,30 @@
+from flask_wtf import Form
+from wtforms import StringField, PasswordField, SelectField, SelectMultipleField
+from wtforms.validators import DataRequired, Email
+from wtforms.fields.html5 import TelField
+from industry import Industry
+from waste import Waste
+
+
+class EmailPasswordForm(Form):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
+class RegisterForm(Form):
+    all_industries = Industry.get_all_industry()
+    all_wastes = Waste.get_all_waste()
+    industry = SelectField('Industry', choices=map(lambda x: (x.id, x.industry), all_industries))
+    contact1 = TelField('Contact Number 1')
+    contact2 = TelField('Contact Number 2')
+    address = StringField('Address', validators=[DataRequired()])
+    contact_person = StringField('Contact Person', validators=[DataRequired()])
+    waste_generated = SelectMultipleField("Waste Generated",
+                                          choices=map(lambda x: (x.waste_id, x.waste.title()),
+                                                      all_wastes))
+    waste_required = SelectMultipleField("Waste Required",
+                                         choices=map(lambda x: (x.waste_id, x.waste.title()),
+                                                     all_wastes))
+
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])

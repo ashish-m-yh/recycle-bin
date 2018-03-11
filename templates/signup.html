@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<div class="signup-form">
+    <div class="form-wrap border login-form rounded">
+        <h4>Register your Organization</h4>
+        <form role="form" action="{{ url_for('.signup') }}" method="post" id="login-form" autocomplete="off">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="industry">Industry</label>
+                {{ form.industry(class_="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="contactNumber1">Contact Number</label>
+                {{ form.contact1(class_="form-control", placeholder="xxxxxxxxxx") }}
+            </div>
+            <div class="form-group">
+                <label for="contactNumber2">Alternate Contact Number</label>
+                {{ form.contact2(class_="form-control", placeholder="xxxxxxxxxx") }}
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                {{ form.address(class_="form-control", placeholder="Address") }}
+            </div>
+            <div class="form-group">
+                <label for="contactPerson">Contact Person</label>
+                {{ form.contact_person(class_="form-control", placeholder="Mr XYZ") }}
+            </div>
+
+            <div class="form-group">
+                <label for="wasteGenerated">Waste Generated</label>
+                {{ form.waste_generated(class_="form-control wasteMultiSelect") }}
+            </div>
+
+            <div class="form-group">
+                <label for="wasteRequired">Waste Required</label>
+                {{ form.waste_required(class_="form-control wasteMultiSelect") }}
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                {{ form.email(class_="form-control", placeholder="somebody@example.com") }}
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                {{ form.password(class_="form-control") }}
+            </div>
+            <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Register">
+        </form>
+
+    </div>
+</div>
+<br>
+<br>
+{% endblock %}
+{% block script %}
+
+<script type="text/javascript">
+    $("document").ready(function () {
+        $('.wasteMultiSelect').multiSelect();
+    });
+
+</script>
+{% endblock %}

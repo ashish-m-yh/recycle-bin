@@ -37,7 +37,21 @@ class Organization(Base):
         Column('units', String(10), nullable=False)
     )
 
-    def save(self, org_info):
-        result = db_base.session.execute(Organization.__table__.insert(), org_info)
-        org_id = result.inserted_primary_key[0]
-        return org_id
+    def save(self, org_info, waste_req_list, waste_gen_list):
+        db_base.session.add(org_info)
+        db_base.session.commit()
+        db_base.session.refresh(org_info)
+
+        for waste_gen in waste_gen_list:
+            db_base.conn.execute(
+                org_info.t_org_waste_gen.insert().values(org_id=org_info.org_id, waste_item=int(waste_gen[0]),
+                                                         qty=int(waste_gen[1]), units=waste_gen[2])
+            )
+
+        for waste_req in waste_req_list:
+            db_base.conn.execute(
+                org_info.t_org_waste_req.insert().values(org_id=org_info.org_id, waste_item=int(waste_req[0]),
+                                                         qty=int(waste_req[1]), units=waste_req[2])
+            )
+
+        return org_info.org_id

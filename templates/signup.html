@@ -7,16 +7,20 @@
         <form role="form" action="{{ url_for('.signup') }}" method="post" id="login-form" autocomplete="off">
             {{ form.csrf_token }}
             <div class="form-group">
+                <label for="name">Name</label>
+                {{ form.name(class_="form-control") }}
+            </div>
+            <div class="form-group">
                 <label for="industry">Industry</label>
                 {{ form.industry(class_="form-control") }}
             </div>
             <div class="form-group">
                 <label for="contactNumber1">Contact Number</label>
-                {{ form.contact1(class_="form-control", placeholder="xxxxxxxxxx") }}
+                {{ form.contact1(class_="form-control", placeholder="") }}
             </div>
             <div class="form-group">
                 <label for="contactNumber2">Alternate Contact Number</label>
-                {{ form.contact2(class_="form-control", placeholder="xxxxxxxxxx") }}
+                {{ form.contact2(class_="form-control", placeholder="") }}
             </div>
             <div class="form-group">
                 <label for="address">Address</label>
@@ -29,12 +33,14 @@
 
             <div class="form-group">
                 <label for="wasteGenerated">Waste Generated</label>
-                {{ form.waste_generated(class_="form-control wasteMultiSelect") }}
+                {{ form.waste_generated(class_="form-control", id="wasteGeneratedMultiSelect") }}
+                <input type="hidden" name="wasteGeneratedList" id="wasteGeneratedList">
             </div>
 
             <div class="form-group">
                 <label for="wasteRequired">Waste Required</label>
-                {{ form.waste_required(class_="form-control wasteMultiSelect") }}
+                {{ form.waste_required(class_="form-control", id="wasteRequiredMultiSelect") }}
+                <input type="hidden" name="wasteRequiredList" id="wasteRequiredList">
             </div>
 
             <div class="form-group">
@@ -50,6 +56,48 @@
 
     </div>
 </div>
+
+
+<div id="quantityModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modelHead">Modal Header</h4>
+                <button type="button" class="close closeModal" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <input type="hidden" name="inputSource" id="inputSource">
+                    <input type="hidden" name="inputValue" id="inputValue">
+                    <div class="col-lg-6">
+                        <label>Quantity</label>
+                        <input class="form-control waste_quantity" type="number" value="" min="0" id="quantity">
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Unit</label>
+                        <select class="form-control waste_unit" id="unit">
+                            <option value="kg">kg</option>
+                            <option value="tonne">tonne</option>
+                            <option value="litres">litres</option>
+                            <option value="number">number</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary addButtonModal" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <br>
 <br>
 {% endblock %}
@@ -57,7 +105,134 @@
 
 <script type="text/javascript">
     $("document").ready(function () {
-        $('.wasteMultiSelect').multiSelect();
+        var wasteGeneratedMultiSelect = $('#wasteGeneratedMultiSelect');
+        var wasteRequiredMultiSelect = $('#wasteRequiredMultiSelect');
+        var inputSource = $('#inputSource');
+        var inputValue = $('#inputValue');
+        var quantity = $("#quantityModal");
+        var modelHead = $("#modelHead");
+        var closeModal = $(".closeModal");
+        var addButtonModal = $(".addButtonModal");
+
+        var wasteOptionMap = {};
+
+        var wasteOptions = $("#wasteGeneratedMultiSelect option");
+        wasteOptions.each(function (value, option) {
+            wasteOptionMap[option.value] = option.text;
+        });
+
+        closeModal.on('click', function (e) {
+            var inputSource = $('#inputSource').val();
+            if (inputSource === "wasteGenerated") {
+                $('#wasteGeneratedMultiSelect').multiSelect('deselect', inputValue.val());
+            }
+            else if (inputSource === "wasteRequired") {
+                $('#wasteRequiredMultiSelect').multiSelect('deselect', inputValue.val());
+            }
+        });
+
+        addButtonModal.on('click', function (e) {
+            var inputSource = $('#inputSource').val();
+            var value = inputValue.val() + "::" + $("#quantity").val() + "::" + $("#unit").val();
+            if (inputSource === "wasteGenerated") {
+                var existingVal = $('#wasteGeneratedList').val();
+                $('#wasteGeneratedList').val(existingVal + "||" + value);
+            }
+            else if (inputSource === "wasteRequired") {
+                var existingVal = $('#wasteRequiredList').val();
+                $('#wasteRequiredList').val(existingVal + "||" + value);
+            }
+        });
+
+        function afterSelectHandler(values, source) {
+            inputSource.val(source);
+            inputValue.val(values);
+            modelHead.text(wasteOptionMap[values[0]]);
+            quantity.modal("show");
+            quantity.find(".waste_quantity").val(0);
+        }
+
+        function afterDeselectHandler(values, source) {
+            if (source === "wasteGenerated") {
+                var existingVal = $('#wasteGeneratedList').val();
+                var list = existingVal.split("||");
+                var valToSave = list.filter(list => list.split("::")[0] != values[0]).join("||");
+                $('#wasteGeneratedList').val(valToSave);
+            }
+            else if (source === "wasteRequired") {
+                var existingVal = $('#wasteRequiredList').val();
+                var list = existingVal.split("||");
+                var valToSave = list.filter(list => list.split("::")[0] != values[0]).join("||");
+                $('#wasteRequiredList').val(valToSave);
+            }
+        }
+
+        wasteGeneratedMultiSelect.multiSelect(
+            {
+                afterSelect: function (values) {
+                    afterSelectHandler(values, "wasteGenerated")
+                },
+                afterDeselect: function (values) {
+                    afterDeselectHandler(values, "wasteGenerated")
+                }
+            }
+        );
+        wasteRequiredMultiSelect.multiSelect(
+            {
+                afterSelect: function (values) {
+                    afterSelectHandler(values, "wasteRequired")
+                },
+                afterDeselect: function (values) {
+                    afterDeselectHandler(values, "wasteRequired")
+                }
+            }
+        );
+        $("#login-form").validate({
+            ignore: [],
+            // Specify validation rules
+            rules: {
+                // The key name on the left side is the name attribute
+                // of an input field. Validation rules are defined
+                // on the right side
+                name: "required",
+                industry: "required",
+                contact1: "required",
+                address: "required",
+                contact_person: "required",
+                wasteGeneratedList: "required",
+                wasteRequiredList: "required",
+                email: {
+                    required: true,
+                    // Specify that email should be validated
+                    // by the built-in "email" rule
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 5
+                }
+            },
+            // Specify validation error messages
+            messages: {
+                name: "Please enter the name of organization",
+                industry: "Please choose the type of Industry",
+                contact1: "Please enter atleast 1 contact phone number",
+                address: "Please enter the address",
+                wasteGeneratedList: "Please choose the waste generated by the orgranization",
+                wasteRequiredList: "Please choose the waste required by the orgranization",
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                },
+                email: "Please enter a valid email address"
+            },
+            // Make sure the form is submitted to the destination defined
+            // in the "action" attribute of the form when valid
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
     });
 
 </script>

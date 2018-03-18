@@ -6,5 +6,6 @@ from models import constants
 
 Base = declarative_base()
 engine = create_engine( "mysql://" + constants.DBUSER + ':' + constants.DBPASS + '@' + constants.DBHOST + '/' + constants.DBNAME)
+conn = engine.connect()
 
 session = Session(engine)

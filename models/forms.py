@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, SelectField, SelectMultipleField, HiddenField
-from wtforms.validators import DataRequired, Email, Optional
+from wtforms.validators import DataRequired, Email, Optional, EqualTo
 from wtforms.fields.html5 import TelField
 from industry import Industry
 from waste import Waste
@@ -9,6 +9,12 @@ from waste import Waste
 class EmailPasswordForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
+
+
+class ResetPasswordForm(Form):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Repeat Password')
 
 
 class RegisterForm(Form):
@@ -27,8 +33,8 @@ class RegisterForm(Form):
                                          choices=map(lambda x: (str(x.waste_id), x.waste.title()),
                                                      all_wastes), validators=[Optional()])
 
-    wasteRequiredList = HiddenField("WasteRequiredList")
-    wasteGeneratedList = HiddenField("WasteRequiredList")
+    waste_required_list = HiddenField("WasteRequiredList")
+    waste_generated_list = HiddenField("WasteRequiredList")
 
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])

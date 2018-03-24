@@ -1,6 +1,8 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer, String, Table, Text
+from sqlalchemy import Column, Integer, String, Table
 from sqlalchemy.ext.declarative import declarative_base
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 import db_base
 
@@ -8,7 +10,7 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
-class Organization(Base):
+class Organization(UserMixin, Base):
     __tablename__ = 'organization'
 
     org_id = Column(Integer, primary_key=True)
@@ -37,6 +39,15 @@ class Organization(Base):
         Column('units', String(10), nullable=False)
     )
 
+    def set_password(self, password):
+        self.passwd = generate_password_hash(password)
+
+    def update(self):
+        db_base.session.commit()
+
+    def check_password(self, password):
+        return check_password_hash(self.passwd, password)
+
     def save(self, org_info, waste_req_list, waste_gen_list):
         db_base.session.add(org_info)
         db_base.session.commit()
@@ -55,3 +66,21 @@ class Organization(Base):
             )
 
         return org_info.org_id
+
+    def get_id(self):
+        return self.org_id
+
+    @staticmethod
+    def get(org_id):
+        return db_base.session.query(Organization).filter(Organization.org_id == int(org_id)).first()
+
+    @staticmethod
+    def get_by_email(email):
+        return db_base.session.query(Organization).filter(Organization.email == email).first()
+
+    @staticmethod
+    def login(email, password):
+        org = db_base.session.query(Organization).filter(Organization.email == email).first()
+        if org:
+            org = org if org.check_password(password=password) else None
+        return org

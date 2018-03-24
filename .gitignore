@@ -1,1 +1,7 @@
+#Python Byte-compiled files
+*.pyc
 *.py[cod]
+# PyCharm .idea
+.idea/
+*/.idea/
+*.iml

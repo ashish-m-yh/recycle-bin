@@ -33,13 +33,18 @@
                     </a>
                 </li>
                 <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" href="#">About</a>-->
+                <!--<a class="nav-link" href="#">About</a>-->
                 <!--</li>-->
                 <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" href="#">Services</a>-->
+                <!--<a class="nav-link" href="#">Services</a>-->
                 <!--</li>-->
                 <li class="nav-item">
-                    <a class="btn btn-dark" href="/signup/">Signup</a>
+                    {% if current_user.is_anonymous %}
+                    <a class="btn btn-dark" href="{{ url_for('index.signup') }}">Signup</a>
+                    {% else %}
+                    <a class="btn btn-dark" href="{{ url_for('index.logout') }}">Logout</a>
+                    {% endif %}
+
                 </li>
             </ul>
         </div>

@@ -1,8 +1,9 @@
-from flask import render_template, Blueprint, flash, redirect, url_for
-from models.forms import EmailPasswordForm, RegisterForm, ResetPasswordForm
+from flask import render_template, Blueprint, flash, redirect, url_for, request
+from models.forms import EmailPasswordForm, RegisterForm, ResetPasswordForm, EditProfileForm
 from models.org import Organization
 from server import login_manager
 from flask_login import current_user, login_user, logout_user, login_required
+from models.industry import Industry
 
 index = Blueprint("index", __name__)
 
@@ -91,8 +92,47 @@ def welcome():
     return render_template("index.html", form=form, reset_password_form=reset_password_form)
 
 
+@index.route("/profile/edit", methods=["GET", "POST"])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if request.method == "GET":
+        form.email.data = current_user.email
+        industry = Industry.get_by_id(current_user.industry_id)
+        form.industry.data = industry
+        form.name.data = current_user.org_name
+        form.contact1.data = current_user.contact_no1
+        form.contact2.data = current_user.contact_no2
+        form.contact_person.data = current_user.contact_person
+        form.address.data = current_user.address
+    if form.validate_on_submit():
+        data = form.data
+        user = Organization.get_by_email(data["email"])
+        user.org_name = data["name"]
+        user.contact_no1 = data["contact1"]
+        user.contact_no2 = data["contact2"]
+        user.contact_person = data["contact_person"]
+        user.industry_id = data["industry"]
+        user.address = data["address"]
+        user.update()
+        flash({
+            "message": "Profile updated successfully",
+            "level": FLASH_LEVEL["success"]
+        })
+        return redirect(url_for("index.dashboard"))
+
+    for error in form.errors:
+        flash({
+            "message": error + " - " + ",".join(form.errors[error]),
+            "level": FLASH_LEVEL["danger"]
+        })
+    return render_template("edit_profile.html", form=form)
+
+
 @index.route("/signup/", methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for("index.dashboard"))
     form = RegisterForm()
     if form.validate_on_submit():
         data = form.data

@@ -170,3 +170,7 @@
     border-color: red;
     color: red;
 }
+
+.dashboard{
+    min-height: 800px;
+}

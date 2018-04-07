@@ -5,6 +5,9 @@ from wtforms.fields.html5 import TelField
 from industry import Industry
 from waste import Waste
 
+ALL_INDUSTRIES = Industry.get_all_industry()
+ALL_WASTES = Waste.get_all_waste()
+
 
 class EmailPasswordForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -13,14 +16,13 @@ class EmailPasswordForm(Form):
 
 class ResetPasswordForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
+    password = PasswordField('Password',
+                             validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password')
 
 
 class RegisterForm(Form):
-    all_industries = Industry.get_all_industry()
-    all_wastes = Waste.get_all_waste()
-    industry = SelectField('Industry', choices=map(lambda x: (str(x.id), x.industry), all_industries))
+    industry = SelectField('Industry', choices=map(lambda x: (str(x.id), x.industry), ALL_INDUSTRIES))
     name = StringField('Oragnization Name', validators=[DataRequired()])
     contact1 = TelField('Contact Number 1')
     contact2 = TelField('Contact Number 2')
@@ -28,13 +30,23 @@ class RegisterForm(Form):
     contact_person = StringField('Contact Person', validators=[DataRequired()])
     waste_generated = SelectMultipleField("Waste Generated",
                                           choices=map(lambda x: (str(x.waste_id), x.waste.title()),
-                                                      all_wastes), validators=[Optional()])
+                                                      ALL_WASTES), validators=[Optional()])
     waste_required = SelectMultipleField("Waste Required",
                                          choices=map(lambda x: (str(x.waste_id), x.waste.title()),
-                                                     all_wastes), validators=[Optional()])
+                                                     ALL_WASTES), validators=[Optional()])
 
     waste_required_list = HiddenField("WasteRequiredList")
     waste_generated_list = HiddenField("WasteRequiredList")
 
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
+
+
+class EditProfileForm(Form):
+    email = StringField('Email', render_kw={'readonly': True})
+    industry = SelectField('Industry', choices=map(lambda x: (str(x.id), x.industry), ALL_INDUSTRIES))
+    name = StringField('Oragnization Name', validators=[DataRequired()])
+    contact1 = TelField('Contact Number 1')
+    contact2 = TelField('Contact Number 2')
+    address = StringField('Address', validators=[DataRequired()])
+    contact_person = StringField('Contact Person', validators=[DataRequired()])

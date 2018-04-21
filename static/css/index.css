@@ -171,6 +171,10 @@
     color: red;
 }
 
-.dashboard{
+.dashboard {
     min-height: 800px;
+}
+
+.btn-orange {
+    background-color: #d74933 !important;
 }

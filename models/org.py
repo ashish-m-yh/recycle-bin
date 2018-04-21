@@ -48,6 +48,38 @@ class Organization(UserMixin, Base):
     def check_password(self, password):
         return check_password_hash(self.passwd, password)
 
+    def get_waste(self, waste_type):
+        table_name = "org_waste_gen" if waste_type == "generated" else "org_waste_req"
+        cursor = db_base.conn.execute("SELECT * FROM " + table_name + " WHERE org_id=" + str(self.org_id)).cursor
+        waste_list = []
+        for row in cursor:
+            _id, waste_id, quantity, unit = row
+            waste_list.append({
+                "waste_id": waste_id,
+                "quantity": quantity,
+                "unit": unit
+            })
+        return waste_list
+
+    def reset_waste(self, waste_type):
+        table_name = "org_waste_gen" if waste_type == "generated" else "org_waste_req"
+        db_base.conn.execute("DELETE FROM " + table_name + " WHERE org_id=" + str(self.org_id))
+
+    def update_waste(self, waste_req_list, waste_gen_list):
+        self.reset_waste("generated")
+        self.reset_waste("required")
+        for waste_gen in waste_gen_list:
+            db_base.conn.execute(
+                self.t_org_waste_gen.insert().values(org_id=self.org_id, waste_item=int(waste_gen[0]),
+                                                     qty=int(waste_gen[1]), units=waste_gen[2])
+            )
+
+        for waste_req in waste_req_list:
+            db_base.conn.execute(
+                self.t_org_waste_req.insert().values(org_id=self.org_id, waste_item=int(waste_req[0]),
+                                                     qty=int(waste_req[1]), units=waste_req[2])
+            )
+
     def save(self, org_info, waste_req_list, waste_gen_list):
         db_base.session.add(org_info)
         db_base.session.commit()

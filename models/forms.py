@@ -50,3 +50,15 @@ class EditProfileForm(Form):
     contact2 = TelField('Contact Number 2')
     address = StringField('Address', validators=[DataRequired()])
     contact_person = StringField('Contact Person', validators=[DataRequired()])
+
+
+class EditWasteForm(Form):
+    waste_generated = SelectMultipleField("Waste Generated",
+                                          choices=map(lambda x: (str(x.waste_id), x.waste.title()),
+                                                      ALL_WASTES), validators=[Optional()])
+    waste_required = SelectMultipleField("Waste Required",
+                                         choices=map(lambda x: (str(x.waste_id), x.waste.title()),
+                                                     ALL_WASTES), validators=[Optional()])
+
+    waste_required_list = HiddenField("WasteRequiredList")
+    waste_generated_list = HiddenField("WasteRequiredList")

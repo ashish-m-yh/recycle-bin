@@ -1,73 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
-<br>
-<div class="signup-form">
-    <div class="form-wrap border login-form rounded">
-        <h4>Register your Organization</h4>
-        <form role="form" action="{{ url_for('.signup') }}" method="post" id="login-form" autocomplete="off">
-            {{ form.csrf_token }}
-            <div class="form-group">
-                <label for="name">Name</label>
-                {{ form.name(class_="form-control") }}
-            </div>
-            <div class="form-group">
-                <label for="industry">Industry</label>
-                {{ form.industry(class_="form-control") }}
-            </div>
-            <div class="form-group">
-                <label for="contactNumber1">Contact Number</label>
-                {{ form.contact1(class_="form-control", placeholder="") }}
-            </div>
-            <div class="form-group">
-                <label for="contactNumber2">Alternate Contact Number</label>
-                {{ form.contact2(class_="form-control", placeholder="") }}
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                {{ form.address(class_="form-control", placeholder="Address") }}
-            </div>
-            <div class="form-group">
-                <label for="contactPerson">Contact Person</label>
-                {{ form.contact_person(class_="form-control") }}
-            </div>
 
+<!-- Portfolio Item Heading -->
+<div class="dashboard">
+    <br>
+    <div class="form-wrap border login-form rounded">
+        <h4>Update Waste</h4>
+        <br>
+        <br>
+        <form role="form" action="{{ url_for('.edit_waste') }}" method="post" id="waste-form" autocomplete="off">
+            {{ form.csrf_token }}
 
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="wasteGenerated">Waste Generated</label>
+                        <label for="email">Waste Generated</label>
                         {{ form.waste_generated(class_="form-control", id="wasteGeneratedMultiSelect") }}
-                        <input type="hidden" name="waste_generated_list" id="wasteGeneratedList">
+                        {{ form.waste_generated_list(class_="form-control", id="wasteGeneratedList") }}
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="wasteRequired">Waste Required</label>
+                        <label for="name">Waste Required</label>
                         {{ form.waste_required(class_="form-control", id="wasteRequiredMultiSelect") }}
-                        <input type="hidden" name="waste_required_list" id="wasteRequiredList">
+                        {{ form.waste_required_list(class_="form-control", id="wasteRequiredList") }}
                     </div>
-
                 </div>
             </div>
-
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <small> (This will be your username)</small>
-                {{ form.email(class_="form-control", placeholder="somebody@example.com") }}
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <small> (Password should have atleast 6 characters)</small>
-                {{ form.password(class_="form-control") }}
-            </div>
+            <br>
             <div class="row">
                 <div class="col-lg-4">
-                    <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block btn-orange" value="Register">
+                    <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block btn-orange" value="Update">
                 </div>
                 <div class="col-lg-8"></div>
             </div>
-
         </form>
 
     </div>
@@ -114,9 +80,10 @@
 </div>
 
 
-<br>
-<br>
+<!-- /.row -->
 {% endblock %}
+
+
 {% block script %}
 <script src="/static/js/waste_mulitselect.js"></script>
 
@@ -130,37 +97,13 @@
                 // The key name on the left side is the name attribute
                 // of an input field. Validation rules are defined
                 // on the right side
-                name: "required",
-                industry: "required",
-                contact1: "required",
-                address: "required",
-                contact_person: "required",
                 wasteGeneratedList: "required",
-                wasteRequiredList: "required",
-                email: {
-                    required: true,
-                    // Specify that email should be validated
-                    // by the built-in "email" rule
-                    email: true
-                },
-                password: {
-                    required: true,
-                    minlength: 6
-                }
+                wasteRequiredList: "required"
             },
             // Specify validation error messages
             messages: {
-                name: "Please enter the name of organization",
-                industry: "Please choose the type of Industry",
-                contact1: "Please enter atleast 1 contact phone number",
-                address: "Please enter the address",
                 wasteGeneratedList: "Please choose the waste generated by the orgranization",
                 wasteRequiredList: "Please choose the waste required by the orgranization",
-                password: {
-                    required: "Please provide a password",
-                    minlength: "Your password must be at least 6 characters long"
-                },
-                email: "Please enter a valid email address"
             },
             // Make sure the form is submitted to the destination defined
             // in the "action" attribute of the form when valid

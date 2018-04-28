@@ -1,4 +1,4 @@
-from server import create_app, API_PORT
+from recyclebin.server import create_app, API_PORT
 import traceback
 from flask import jsonify, make_response
 import db_base

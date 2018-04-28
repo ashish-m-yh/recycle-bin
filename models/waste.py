@@ -21,4 +21,4 @@ class Waste(Base):
 
     @staticmethod
     def get_by_id(waste_id):
-        return db_base.session.query(Waste).filter(Waste.id == waste_id).first()
+        return db_base.session.query(Waste).filter(Waste.waste_id == waste_id).first()

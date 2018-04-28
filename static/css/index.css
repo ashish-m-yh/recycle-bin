@@ -178,3 +178,11 @@
 .btn-orange {
     background-color: #d74933 !important;
 }
+
+.orange-list {
+    background-color: #d74933 !important;
+    color: white;
+}
+.waste_org_item {
+    cursor: pointer;
+}

@@ -116,3 +116,20 @@ class Organization(UserMixin, Base):
         if org:
             org = org if org.check_password(password=password) else None
         return org
+
+    def get_matching_waste_orgs(self, waste_type):
+        waste_list = self.get_waste(waste_type)
+        table_name = "org_waste_gen" if waste_type != "generated" else "org_waste_req"
+        orgs = []
+        for waste in waste_list:
+            waste_id = waste["waste_id"]
+            org_ids = []
+            cursor = db_base.conn.execute("SELECT org_id FROM " + table_name + " WHERE waste_item=" + str(waste_id)).cursor
+            for row in cursor:
+                org_ids.append(row[0])
+            for org_id in org_ids:
+                org = Organization.get(org_id)
+                if org:
+                    orgs.append(org)
+
+        return orgs

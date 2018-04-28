@@ -1,6 +1,7 @@
 from flask import render_template, Blueprint, flash, redirect, url_for, request
 from models.forms import EmailPasswordForm, RegisterForm, ResetPasswordForm, EditProfileForm, EditWasteForm
 from models.org import Organization
+from models.waste import Waste
 from server import login_manager
 from flask_login import current_user, login_user, logout_user, login_required
 from models.industry import Industry
@@ -62,7 +63,24 @@ def reset_password():
 @index.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    waste_gen = current_user.get_waste("generated")
+    waste_req = current_user.get_waste("required")
+
+    waste_gen_list = map(lambda x: Waste.get_by_id(x["waste_id"]).waste.title(), waste_gen)
+    waste_req_list = map(lambda x: Waste.get_by_id(x["waste_id"]).waste.title(), waste_req)
+
+    matching_orgs = {
+        "generated": current_user.get_matching_waste_orgs("generated"),
+        "required": current_user.get_matching_waste_orgs("required")
+    }
+
+    context = {
+        "waste_gen_list": waste_gen_list,
+        "waste_req_list": waste_req_list,
+        "matching_orgs": matching_orgs
+    }
+
+    return render_template("dashboard.html", context=context)
 
 
 @index.route("/", methods=["GET", "POST"])

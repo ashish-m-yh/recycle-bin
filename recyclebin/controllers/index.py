@@ -1,10 +1,10 @@
 from flask import render_template, Blueprint, flash, redirect, url_for, request
-from models.forms import EmailPasswordForm, RegisterForm, ResetPasswordForm, EditProfileForm, EditWasteForm
-from models.org import Organization
-from models.waste import Waste
-from server import login_manager
+from recyclebin.models.forms import EmailPasswordForm, RegisterForm, ResetPasswordForm, EditProfileForm, EditWasteForm
+from recyclebin.models.org import Organization
+from recyclebin.models.waste import Waste
+from recyclebin.server import login_manager
 from flask_login import current_user, login_user, logout_user, login_required
-from models.industry import Industry
+from recyclebin.models.industry import Industry
 
 index = Blueprint("index", __name__)
 

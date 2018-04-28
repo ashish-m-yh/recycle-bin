@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-import db_base
+from recyclebin import db_base
 
 Base = declarative_base()
 metadata = Base.metadata

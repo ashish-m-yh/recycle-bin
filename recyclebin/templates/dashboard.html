@@ -1,117 +1,135 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<!-- Portfolio Item Heading -->
-<div class="dashboard">
-    <h1 class="my-4">
-        Hi, {{ current_user.org_name }}!
+    <!-- Portfolio Item Heading -->
+    <div class="dashboard">
+        <h1 class="my-4">
+            Hi, {{ current_user.org_name }}!
 
-    </h1>
-    <div class="row">
-        <div class="col-lg-9">
-            <p>
-                We have found the following industries, with matching wastes.
+        </h1>
+        <div class="row">
+            <div class="col-lg-9">
+                <p>
+                    We have found the following industries, with matching wastes.
 
-            </p>
-            <p>
-                Click on the industry name to get mode details.
-            </p>
+                </p>
+                <p>
+                    Click on the industry name to get mode details.
+                </p>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <ul class="list-group">
+                    <li class="list-group-item orange-list">Waste Required</li>
+                    {% for waste_item in context.waste_req_list %}
+                        <li class="list-group-item">{{ waste_item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-2">
+                <p style="font-size: 100px;">&rarr;</p>
+            </div>
+
+            <div class="col-lg-4">
+                <ul class="list-group">
+                    <li class="list-group-item orange-list">Matching Industries</li>
+
+                    {% if context.matching_orgs.required %}
+                        {% for waste_item in context.matching_orgs.required %}
+                            <li class="list-group-item waste_org_item">
+                                <span>{{ waste_item.org_name }}</span>
+                                <div class="org_details" style="display: none">
+                                    <hr>
+                                    <p><strong>Name: </strong>{{ waste_item.org_name }}</p>
+                                    <p><strong>Address: </strong>{{ waste_item.address }}</p>
+                                    <p><strong>Email: </strong>{{ waste_item.email }}</p>
+                                    <p><strong>Contact Person: </strong>{{ waste_item.contact_person }}</p>
+                                    <p><strong>Phone: </strong>{{ waste_item.contact_no1 }} {{ waste_item.contact_no2 }}
+                                    </p>
+                                </div>
+
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item">
+                            Sorry, looks like we don't have any matching waste industries
+                        </li>
+                    {% endif %}
+
+
+                </ul>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-lg-4">
+                <ul class="list-group">
+                    <li class="list-group-item orange-list">Waste Generated</li>
+                    {% for waste_item in context.waste_gen_list %}
+                        <li class="list-group-item">{{ waste_item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-2">
+                <p style="font-size: 100px;">&rarr;</p>
+            </div>
+
+
+            <div class="col-lg-4">
+                <ul class="list-group">
+                    <li class="list-group-item orange-list">Matching Industries</li>
+                    {% if context.matching_orgs.required %}
+                        {% for waste_item in context.matching_orgs.generated %}
+                            <li class="list-group-item waste_org_item">
+                                <span>{{ waste_item.org_name }}</span>
+                                <div class="org_details" style="display: none">
+                                    <hr>
+                                    <p><strong>Name: </strong>{{ waste_item.org_name }}</p>
+                                    <p><strong>Address: </strong>{{ waste_item.address }}</p>
+                                    <p><strong>Email: </strong>{{ waste_item.email }}</p>
+                                    <p><strong>Contact Person: </strong>{{ waste_item.contact_person }}</p>
+                                    <p><strong>Phone: </strong>{{ waste_item.contact_no1 }} {{ waste_item.contact_no2 }}
+                                    </p>
+                                </div>
+
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="list-group-item">
+                            Sorry, looks like we don't have any matching waste industries
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+            <div class="col-lg-1"></div>
+
+
+        </div>
+
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <ul class="list-group">
-                <li class="list-group-item orange-list">Waste Required</li>
-                {% for waste_item in context.waste_req_list %}
-                <li class="list-group-item">{{waste_item}}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-2">
-            <p style="font-size: 100px;">&rarr;</p>
-        </div>
-
-        <div class="col-lg-4">
-            <ul class="list-group">
-                <li class="list-group-item orange-list">Matching Industries</li>
-                {% for waste_item in context.matching_orgs.required %}
-                <li class="list-group-item waste_org_item">
-                    <span>{{waste_item.org_name}}</span>
-                    <div class="org_details" style="display: none">
-                        <hr>
-                        <p><strong>Name: </strong>{{waste_item.org_name}}</p>
-                        <p><strong>Address: </strong>{{waste_item.address}}</p>
-                        <p><strong>Email: </strong>{{waste_item.email}}</p>
-                        <p><strong>Contact Person: </strong>{{waste_item.contact_person}}</p>
-                        <p><strong>Phone: </strong>{{waste_item.contact_no1}} {{waste_item.contact_no2}}</p>
-                    </div>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-lg-1"></div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="row">
-        <div class="col-lg-4">
-            <ul class="list-group">
-                <li class="list-group-item orange-list">Waste Generated</li>
-                {% for waste_item in context.waste_gen_list %}
-                <li class="list-group-item">{{waste_item}}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-2">
-            <p style="font-size: 100px;">&rarr;</p>
-        </div>
 
 
-        <div class="col-lg-4">
-            <ul class="list-group">
-                <li class="list-group-item orange-list">Matching Industries</li>
-                {% for waste_item in context.matching_orgs.generated %}
-                <li class="list-group-item waste_org_item">
-                    <span>{{waste_item.org_name}}</span>
-                    <div class="org_details" style="display: none">
-                        <hr>
-                        <p><strong>Name: </strong>{{waste_item.org_name}}</p>
-                        <p><strong>Address: </strong>{{waste_item.address}}</p>
-                        <p><strong>Email: </strong>{{waste_item.email}}</p>
-                        <p><strong>Contact Person: </strong>{{waste_item.contact_person}}</p>
-                        <p><strong>Phone: </strong>{{waste_item.contact_no1}} {{waste_item.contact_no2}}</p>
-                    </div>
-
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-lg-1"></div>
-
-
-    </div>
-
-</div>
-
-
-<!-- /.row -->
+    <!-- /.row -->
 {% endblock %}
 
 {% block script %}
 
-<script type="text/javascript">
-    $("document").ready(function () {
+    <script type="text/javascript">
+        $("document").ready(function () {
 
-        $(".waste_org_item").on("click", function () {
-            //$(".org_details").hide();
-            $(this).find(".org_details").toggle();
-        })
+            $(".waste_org_item").on("click", function () {
+                //$(".org_details").hide();
+                $(this).find(".org_details").toggle();
+            })
 
-    });
+        });
 
-</script>
+    </script>
 {% endblock %}

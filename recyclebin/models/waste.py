@@ -1,8 +1,8 @@
 # coding: utf-8
-from sqlalchemy import Column, Integer, String, Table, Text
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
-import db_base
+from recyclebin import db_base
 
 Base = declarative_base()
 metadata = Base.metadata

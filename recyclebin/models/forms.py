@@ -1,4 +1,4 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SelectMultipleField, HiddenField
 from wtforms.validators import DataRequired, Email, Optional, EqualTo
 from wtforms.fields.html5 import TelField
@@ -9,19 +9,19 @@ ALL_INDUSTRIES = Industry.get_all_industry()
 ALL_WASTES = Waste.get_all_waste()
 
 
-class EmailPasswordForm(Form):
+class EmailPasswordForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
 
 
-class ResetPasswordForm(Form):
+class ResetPasswordForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password',
                              validators=[DataRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password')
 
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     industry = SelectField('Industry', choices=map(lambda x: (str(x.id), x.industry), ALL_INDUSTRIES))
     name = StringField('Oragnization Name', validators=[DataRequired()])
     contact1 = TelField('Contact Number 1')
@@ -42,7 +42,7 @@ class RegisterForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
 
 
-class EditProfileForm(Form):
+class EditProfileForm(FlaskForm):
     email = StringField('Email', render_kw={'readonly': True})
     industry = SelectField('Industry', choices=map(lambda x: (str(x.id), x.industry), ALL_INDUSTRIES))
     name = StringField('Oragnization Name', validators=[DataRequired()])
@@ -52,7 +52,7 @@ class EditProfileForm(Form):
     contact_person = StringField('Contact Person', validators=[DataRequired()])
 
 
-class EditWasteForm(Form):
+class EditWasteForm(FlaskForm):
     waste_generated = SelectMultipleField("Waste Generated",
                                           choices=map(lambda x: (str(x.waste_id), x.waste.title()),
                                                       ALL_WASTES), validators=[Optional()])

@@ -1,4 +1,4 @@
-import models.org
+from recyclebin import models
 
 from flask import Blueprint, make_response, jsonify
 

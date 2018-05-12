@@ -1,10 +1,11 @@
-from flask import render_template, Blueprint, flash, redirect, url_for, request
+from flask import render_template, Blueprint, flash, redirect, url_for, request, jsonify
 from recyclebin.models.forms import EmailPasswordForm, RegisterForm, ResetPasswordForm, EditProfileForm, EditWasteForm
 from recyclebin.models.org import Organization
 from recyclebin.models.waste import Waste
 from recyclebin.server import login_manager
 from flask_login import current_user, login_user, logout_user, login_required
 from recyclebin.models.industry import Industry
+import operator
 
 index = Blueprint("index", __name__)
 
@@ -81,6 +82,18 @@ def dashboard():
     }
 
     return render_template("dashboard.html", context=context)
+
+
+@index.route("/stats", methods=["GET"])
+def get_stats():
+    orgs = len(Organization.get_all_orgs())
+    waste_counter = Waste.get_all_waste_in_system()
+    waste_counter = sorted(waste_counter.items(), key=operator.itemgetter(1), reverse=True)
+    return_item = {
+        "orgs": orgs,
+        "waste_details": waste_counter
+    }
+    return jsonify(return_item)
 
 
 @index.route("/", methods=["GET", "POST"])

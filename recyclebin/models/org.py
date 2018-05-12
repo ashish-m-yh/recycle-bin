@@ -103,6 +103,10 @@ class Organization(UserMixin, Base):
         return self.org_id
 
     @staticmethod
+    def get_all_orgs():
+        return db_base.session.query(Organization).all()
+
+    @staticmethod
     def get(org_id):
         return db_base.session.query(Organization).filter(Organization.org_id == int(org_id)).first()
 

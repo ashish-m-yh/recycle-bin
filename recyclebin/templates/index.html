@@ -65,6 +65,40 @@
 </div>
 <!-- /.row -->
 
+<!-- Related Projects Row -->
+<br><br>
+<div class="row">
+    <div class="col-lg-6">
+        <h3 class="my-4">Already <span class="num_companies">X</span> industries signed up!</h3>
+
+        <img class="img-fluid" src="/static/img/tree.png" alt="" style="height: 100px;">
+
+        <p>
+            <span class="num_companies">X</span> industries have already started using the platform to recycle and manage waste resources.
+        </p>
+
+
+        <h4>
+            We can save the environment together!
+        </h4>
+
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-5">
+        <h3>Top recycle materials in the system</h3>
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Waste</th>
+                <th>Units available</th>
+              </tr>
+            </thead>
+            <tbody class="waste-table">
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- /.row -->
 
 <div class="modal fade" id="forget-modal" role="dialog">
     <div class="modal-dialog">
@@ -185,6 +219,20 @@
             }
         });
 
+
+        $.get('/stats', function (data, status) {
+            var html = "";
+            $(".num_companies").html(data.orgs);
+            data.waste_details.forEach(function(a, i){
+                if (i < 5) {
+                    var item = a[0];
+                    var quantity = a[1];
+                    html = html + "<tr><td>" + item + "</td><td>" + quantity + "</td></tr>";
+                }
+            });
+
+            $(".waste-table").html(html);
+        });
     });
 
 </script>

@@ -134,7 +134,7 @@ def edit_profile():
     if request.method == "GET":
         form.email.data = current_user.email
         industry = Industry.get_by_id(current_user.industry_id)
-        form.industry.data = industry
+        form.industry.data = str(industry.id)
         form.name.data = current_user.org_name
         form.contact1.data = current_user.contact_no1
         form.contact2.data = current_user.contact_no2
@@ -147,7 +147,7 @@ def edit_profile():
         user.contact_no1 = data["contact1"]
         user.contact_no2 = data["contact2"]
         user.contact_person = data["contact_person"]
-        user.industry_id = data["industry"]
+        user.industry_id = int(data["industry"])
         user.address = data["address"]
         user.update()
         flash({

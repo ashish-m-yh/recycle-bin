@@ -10,18 +10,14 @@
         <div class="row">
             <div class="col-lg-9">
                 <p>
-                    We have found the following industries, with matching wastes.
-
-                </p>
-                <p>
-                    Click on the industry name to get mode details.
+                    You can transact with the organizations listed below for exchange of industrial by-products.
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-4">
                 <ul class="list-group">
-                    <li class="list-group-item orange-list">Waste Required</li>
+                    <li class="list-group-item orange-list">Materials Required</li>
                     {% for waste_item in context.waste_req_list %}
                         <li class="list-group-item">{{ waste_item }}</li>
                     {% endfor %}
@@ -34,12 +30,13 @@
 
             <div class="col-lg-4">
                 <ul class="list-group">
-                    <li class="list-group-item orange-list">Matching Industries</li>
+                    <li class="list-group-item orange-list">Suppliers</li>
 
-                    {% if context.matching_orgs.required %}
+                    {% if context.matching_orgs.required|length > 0 %}
                         {% for waste_item in context.matching_orgs.required %}
                             <li class="list-group-item waste_org_item">
                                 <span>{{ waste_item.org_name }}</span>
+                                <span style="float: right">(+)</span>
                                 <div class="org_details" style="display: none">
                                     <hr>
                                     <p><strong>Name: </strong>{{ waste_item.org_name }}</p>
@@ -69,7 +66,7 @@
         <div class="row">
             <div class="col-lg-4">
                 <ul class="list-group">
-                    <li class="list-group-item orange-list">Waste Generated</li>
+                    <li class="list-group-item orange-list">Materials Produced</li>
                     {% for waste_item in context.waste_gen_list %}
                         <li class="list-group-item">{{ waste_item }}</li>
                     {% endfor %}
@@ -83,11 +80,12 @@
 
             <div class="col-lg-4">
                 <ul class="list-group">
-                    <li class="list-group-item orange-list">Matching Industries</li>
-                    {% if context.matching_orgs.required %}
+                    <li class="list-group-item orange-list">Prospective buyers</li>
+                    {% if context.matching_orgs.generated|length > 0 %}
                         {% for waste_item in context.matching_orgs.generated %}
                             <li class="list-group-item waste_org_item">
                                 <span>{{ waste_item.org_name }}</span>
+                                <span style="float: right">(+)</span>
                                 <div class="org_details" style="display: none">
                                     <hr>
                                     <p><strong>Name: </strong>{{ waste_item.org_name }}</p>

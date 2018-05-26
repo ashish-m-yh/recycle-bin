@@ -32,11 +32,11 @@ class Waste(Base):
         waste_counter = Counter()
 
         for table in table_names:
-            qry = "SELECT waste_item, qty from " + table
+            qry = "SELECT waste_item, MAX(qty) from " + table + " GROUP BY waste_item, units"
             cursor = db_base.conn.execute(qry).cursor
             for row in cursor:
                 _id = row[0]
                 waste = filter(lambda x: x.waste_id == _id, all_wastes)[0]
-                waste_counter[waste.waste.title()] += row[1]
+                waste_counter[waste.waste.title()] = row[1]
 
         return waste_counter

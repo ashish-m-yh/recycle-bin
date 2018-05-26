@@ -7,7 +7,7 @@
         <form role="form" action="{{ url_for('.signup') }}" method="post" id="login-form" autocomplete="off">
             {{ form.csrf_token }}
             <div class="form-group">
-                <label for="name">Name</label>
+                <label for="name">Organization Name</label>
                 {{ form.name(class_="form-control") }}
             </div>
             <div class="form-group">
@@ -35,16 +35,16 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="wasteGenerated">Waste Generated</label>
+                        <label for="wasteGenerated">Materials Generated</label>
                         {{ form.waste_generated(class_="form-control", id="wasteGeneratedMultiSelect") }}
-                        <input type="hidden" name="waste_generated_list" id="wasteGeneratedList">
+                        {{ form.waste_generated_list(class_="form-control", id="wasteGeneratedList") }}
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="wasteRequired">Waste Required</label>
+                        <label for="wasteRequired">Materials Required</label>
                         {{ form.waste_required(class_="form-control", id="wasteRequiredMultiSelect") }}
-                        <input type="hidden" name="waste_required_list" id="wasteRequiredList">
+                        {{ form.waste_required_list(class_="form-control", id="wasteRequiredList") }}
                     </div>
 
                 </div>

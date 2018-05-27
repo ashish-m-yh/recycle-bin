@@ -6,6 +6,7 @@
     <br>
     <div class="form-wrap border login-form rounded">
         <h4>Update Profile</h4>
+        <br>
         <form role="form" action="{{ url_for('.edit_profile') }}" method="post" id="profile-form" autocomplete="off">
             {{ form.csrf_token }}
 
@@ -40,7 +41,7 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block btn-orange" value="Update">
                 </div>
                 <div class="col-lg-8"></div>

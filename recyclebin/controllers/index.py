@@ -67,8 +67,8 @@ def dashboard():
     waste_gen = current_user.get_waste("generated")
     waste_req = current_user.get_waste("required")
 
-    waste_gen_list = map(lambda x: Waste.get_by_id(x["waste_id"]).waste.title(), waste_gen)
-    waste_req_list = map(lambda x: Waste.get_by_id(x["waste_id"]).waste.title(), waste_req)
+    waste_gen_list = map(lambda x: Waste.get_by_id(x["waste_id"]).waste.title() + " (" + str(x["quantity"]) + " " + x["unit"] + ")", waste_gen)
+    waste_req_list = map(lambda x: Waste.get_by_id(x["waste_id"]).waste.title() + " (" + str(x["quantity"]) + " " + x["unit"] + ")", waste_req)
 
     matching_orgs = {
         "generated": current_user.get_matching_waste_orgs("generated"),

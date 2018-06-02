@@ -62,3 +62,7 @@ Contains details of organization waste required (quantity and unit)
   - conf.py
 
 - python server.py 
+
+
+# Update code on Prod
+Place the update.sh script on root user and run the script. It will do a git pull and restart the server

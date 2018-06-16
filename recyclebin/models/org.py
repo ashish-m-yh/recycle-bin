@@ -3,6 +3,9 @@ from sqlalchemy import Column, Integer, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from states import State
+from district import District
+from place import Place
 
 from recyclebin import db_base
 
@@ -22,6 +25,9 @@ class Organization(UserMixin, Base):
     contact_no2 = Column(String(10), nullable=False)
     address = Column(String, nullable=False)
     contact_person = Column(String(255), nullable=False)
+    state_id = Column(Integer, nullable=False)
+    district_id = Column(Integer, nullable=True)
+    place_id = Column(Integer, nullable=True)
 
     t_org_waste_gen = Table(
         'org_waste_gen', metadata,
@@ -99,6 +105,15 @@ class Organization(UserMixin, Base):
 
         return org_info.org_id
 
+    def get_state(self):
+        return db_base.session.query(State).filter(State.id == int(self.state_id)).first().name
+
+    def get_district(self):
+        return db_base.session.query(District).filter(District.id == int(self.district_id)).first().name
+
+    def get_place(self):
+        return db_base.session.query(Place).filter(Place.id == int(self.place_id)).first().name
+
     def get_id(self):
         return self.org_id
 
@@ -133,7 +148,7 @@ class Organization(UserMixin, Base):
                 org_ids.append(row[0])
             for org_id in org_ids:
                 org = Organization.get(org_id)
-                if org:
+                if org and org.state_id == self.state_id:
                     orgs.append(org)
 
         return orgs

@@ -7,15 +7,15 @@
         <form role="form" action="{{ url_for('.signup') }}" method="post" id="login-form" autocomplete="off">
             {{ form.csrf_token }}
             <div class="form-group">
-                <label for="name">Organization Name</label>
+                <label for="name">Organization Name <span class="error">*</span></label>
                 {{ form.name(class_="form-control") }}
             </div>
             <div class="form-group">
-                <label for="industry">Industry</label>
+                <label for="industry">Industry <span class="error">*</span></label>
                 {{ form.industry(class_="form-control") }}
             </div>
             <div class="form-group">
-                <label for="contactNumber1">Contact Number</label>
+                <label for="contactNumber1">Contact Number <span class="error">*</span></label>
                 {{ form.contact1(class_="form-control", placeholder="") }}
             </div>
             <div class="form-group">
@@ -23,11 +23,31 @@
                 {{ form.contact2(class_="form-control", placeholder="") }}
             </div>
             <div class="form-group">
-                <label for="address">Address</label>
+                <label for="address">Address <span class="error">*</span></label>
                 {{ form.address(class_="form-control", placeholder="Address") }}
             </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="state">State <span class="error">*</span></label>
+                        {{ form.state(class_="form-control", placeholder="State") }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="district">District</label>
+                        {{ form.district(class_="form-control", placeholder="District") }}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="district">Place</label>
+                        {{ form.place(class_="form-control", placeholder="Place") }}
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
-                <label for="contactPerson">Contact Person</label>
+                <label for="contactPerson">Contact Person <span class="error">*</span></label>
                 {{ form.contact_person(class_="form-control") }}
             </div>
 
@@ -35,14 +55,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="wasteGenerated">Materials Generated</label>
+                        <label for="wasteGenerated">Materials Generated <span class="error">*</span></label>
                         {{ form.waste_generated(class_="form-control", id="wasteGeneratedMultiSelect") }}
                         {{ form.waste_generated_list(class_="form-control", id="wasteGeneratedList") }}
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="wasteRequired">Materials Required</label>
+                        <label for="wasteRequired">Materials Required <span class="error">*</span></label>
                         {{ form.waste_required(class_="form-control", id="wasteRequiredMultiSelect") }}
                         {{ form.waste_required_list(class_="form-control", id="wasteRequiredList") }}
                     </div>
@@ -52,12 +72,12 @@
 
 
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Email <span class="error">*</span></label>
                 <small> (This will be your username)</small>
                 {{ form.email(class_="form-control", placeholder="somebody@example.com") }}
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password <span class="error">*</span></label>
                 <small> (Password should have atleast 6 characters)</small>
                 {{ form.password(class_="form-control") }}
             </div>
@@ -134,6 +154,7 @@
                 industry: "required",
                 contact1: "required",
                 address: "required",
+                state: "required",
                 contact_person: "required",
                 wasteGeneratedList: "required",
                 wasteRequiredList: "required",
@@ -154,6 +175,7 @@
                 industry: "Please choose the type of Industry",
                 contact1: "Please enter atleast 1 contact phone number",
                 address: "Please enter the address",
+                state: "Please select the state",
                 wasteGeneratedList: "Please choose the waste generated by the orgranization",
                 wasteRequiredList: "Please choose the waste required by the orgranization",
                 password: {

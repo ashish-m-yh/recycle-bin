@@ -41,6 +41,13 @@
                                     <hr>
                                     <p><strong>Name: </strong>{{ waste_item.org_name }}</p>
                                     <p><strong>Address: </strong>{{ waste_item.address }}</p>
+                                    <p><strong>State: </strong>{{ waste_item.get_state() }}</p>
+                                    {% if waste_item.district_id %}
+                                        <p><strong>District: </strong>{{ waste_item.get_district() }}</p>
+                                    {% endif %}
+                                    {% if waste_item.place_id %}
+                                        <p><strong>Place: </strong>{{ waste_item.get_place() }}</p>
+                                    {% endif %}
                                     <p><strong>Email: </strong>{{ waste_item.email }}</p>
                                     <p><strong>Contact Person: </strong>{{ waste_item.contact_person }}</p>
                                     <p><strong>Phone: </strong>{{ waste_item.contact_no1 }} {{ waste_item.contact_no2 }}

@@ -5,6 +5,9 @@ from recyclebin.models.waste import Waste
 from recyclebin.server import login_manager
 from flask_login import current_user, login_user, logout_user, login_required
 from recyclebin.models.industry import Industry
+from recyclebin.models.states import State
+from recyclebin.models.district import District
+from recyclebin.models.place import Place
 import operator
 
 index = Blueprint("index", __name__)
@@ -96,6 +99,42 @@ def get_stats():
     return jsonify(return_item)
 
 
+@index.route("/district/<state_id>", methods=["GET"])
+def get_district(state_id):
+    return_item = {
+        "district_list": []
+    }
+    all_districts = District.get_all_district()
+
+    try:
+        district_list = filter(lambda x: x.state_id == int(state_id), all_districts)
+        return_item = {
+            "district_list": map(lambda x: (x.id, x.name), district_list)
+        }
+    except ValueError:
+        # in case of '-' value
+        pass
+
+    return jsonify(return_item)
+
+
+@index.route("/place/<district_id>", methods=["GET"])
+def get_place(district_id):
+    return_item = {
+        "place_list": []
+    }
+    all_places = Place.get_all_places()
+
+    try:
+        place_list = filter(lambda x: x.district_id == int(district_id), all_places)
+        return_item["place_list"] = map(lambda x: (x.id, x.name), place_list)
+    except ValueError:
+        # in case of '-' value
+        pass
+
+    return jsonify(return_item)
+
+
 @index.route("/", methods=["GET", "POST"])
 def welcome():
     if current_user.is_authenticated:
@@ -140,15 +179,28 @@ def edit_profile():
         form.contact2.data = current_user.contact_no2
         form.contact_person.data = current_user.contact_person
         form.address.data = current_user.address
+        if current_user.state_id:
+            state = State.get_by_id(current_user.state_id)
+            form.state.data = str(state.id)
+        if current_user.district_id:
+            district = District.get_by_id(current_user.district_id)
+            form.district.data = str(district.id)
+        if current_user.place_id:
+            place = Place.get_by_id(current_user.place_id)
+            form.place.data = str(place.id)
+
     if form.validate_on_submit():
         data = form.data
         user = Organization.get_by_email(data["email"])
         user.org_name = data["name"]
         user.contact_no1 = data["contact1"]
-        user.contact_no2 = data["contact2"]
+        user.contact_no2 = data["contact2"] if data["contact2"] else None
         user.contact_person = data["contact_person"]
         user.industry_id = int(data["industry"])
         user.address = data["address"]
+        user.state_id = int(data["state"])
+        user.district_id = int(data["district"]) if data["district"] != "-" else None
+        user.place_id = int(data["place"]) if data["place"] != "-" else None
         user.update()
         flash({
             "message": "Profile updated successfully",
@@ -199,9 +251,13 @@ def signup():
         organization.email = data["email"]
         organization.address = data["address"]
         organization.contact_no1 = data["contact1"]
-        organization.contact_no2 = data["contact1"] if data["contact1"] else None
+        organization.contact_no2 = data["contact2"] if data["contact2"] else None
         organization.contact_person = data["contact_person"]
         organization.industry_id = int(data["industry"])
+        organization.state_id = int(data["state"])
+        organization.district_id = data["place"] if data["district"] != "-" else None
+        organization.place_id = data["place"] if data["place"] != "-" else None
+        organization.state = int(data["state"])
         organization.org_name = data["name"]
 
         waste_gen_list = map(lambda x: x.split("::"), data["waste_generated_list"].split("||"))

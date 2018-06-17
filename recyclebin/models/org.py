@@ -106,6 +106,8 @@ class Organization(UserMixin, Base):
         return org_info.org_id
 
     def get_state(self):
+        if not self.state_id:
+            return ""
         return db_base.session.query(State).filter(State.id == int(self.state_id)).first().name
 
     def get_district(self):

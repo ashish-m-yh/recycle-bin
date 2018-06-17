@@ -194,7 +194,7 @@ def edit_profile():
         user = Organization.get_by_email(data["email"])
         user.org_name = data["name"]
         user.contact_no1 = data["contact1"]
-        user.contact_no2 = data["contact2"] if data["contact2"] else None
+        user.contact_no2 = data["contact2"] if data["contact2"] else ""
         user.contact_person = data["contact_person"]
         user.industry_id = int(data["industry"])
         user.address = data["address"]
@@ -251,7 +251,7 @@ def signup():
         organization.email = data["email"]
         organization.address = data["address"]
         organization.contact_no1 = data["contact1"]
-        organization.contact_no2 = data["contact2"] if data["contact2"] else None
+        organization.contact_no2 = data["contact2"] if data["contact2"] else ""
         organization.contact_person = data["contact_person"]
         organization.industry_id = int(data["industry"])
         organization.state_id = int(data["state"])

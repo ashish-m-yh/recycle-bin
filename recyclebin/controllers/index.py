@@ -35,6 +35,11 @@ def logout():
     return redirect(url_for('index.welcome'))
 
 
+@index.route('/disclaimer')
+def disclaimer():
+    return render_template("disclaimer.html")
+
+
 @index.route('/reset_password', methods=["POST"])
 def reset_password():
     form = ResetPasswordForm()
